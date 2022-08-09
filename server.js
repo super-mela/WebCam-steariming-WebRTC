@@ -2,10 +2,22 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const webrtc = require("wrtc");
+const cors = require('cors')
+const path = require('path')
 
 let senderStream;
 
+var corsOptions = {
+    origin: '*',
+    optionsSuccessStatus: 200 // For legacy browser support
+}
+
+app.use(cors(corsOptions));
 app.use(express.static('public'));
+app.use('/poster', express.static(path.join(__dirname, 'resource/poster')));
+app.use('/backdrop', express.static('resource/backdrop'));
+app.use('/videos', express.static('resource/videos'));
+app.use('/profile_images', express.static('resource/profile_images'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -55,4 +67,4 @@ function handleTrackEvent(e, peer) {
 };
 
 
-app.listen(4000, () => console.log('server started'));
+app.listen(4001, () => console.log('server started'));
